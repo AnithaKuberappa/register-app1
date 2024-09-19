@@ -33,7 +33,7 @@ pipeline {
         stage('SonarQube Analysis') { // Added a separate stage for clarity
             steps {
                 script {
-                    withSonarQubeEnv('credentialsId: 'Sonarqube-server') { 
+                    withSonarQubeEnv(credentialsId:'Sonarqube-server') { 
                         sh 'mvn sonar:sonar'
                     }
                 }
