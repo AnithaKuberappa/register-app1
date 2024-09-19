@@ -33,19 +33,19 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv(credentialsId:'SonarQubeServer') { // Use the SonarQube server name, not credentialsId
+                    withSonarQubeEnv(credentialsId:'Sonarqube-server') { // Use the SonarQube server name, not credentialsId
                         sh 'mvn sonar:sonar' // Run SonarQube analysis
                     }
                 }
             }
         }
 
-        // stage('Quality Gate') {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId:'SonarQubeServer'
-        //         }
-        //     }
-        // }
+        stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId:'Sonarqube-server'
+                }
+            }
+        }
     }
 }
