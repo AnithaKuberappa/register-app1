@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs() // Corrected to cleanWs() for the proper function name
+                cleanWs() // Corrected to cleanWs() for workspace cleanup
             }
         }
 
@@ -24,9 +24,19 @@ pipeline {
             }
         }
 
-        stage('Test Application') { // Moved inside stages
+        stage('Test Application') {
             steps {
                 sh 'mvn test'
+            }
+        }
+
+        stage('SonarQube Analysis') { // Added a separate stage for clarity
+            steps {
+                script {
+                    withSonarQubeEnv('Jenkins-Sonarqube-token') { // Corrected placement of credentials
+                        sh 'mvn sonar:sonar'
+                    }
+                }
             }
         }
     }
