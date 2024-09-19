@@ -33,7 +33,7 @@ pipeline {
         stage('SonarQube Analysis') { // Added a separate stage for clarity
             steps {
                 script {
-                    withSonarQubeEnv('Jenkins-Sonarqube-token') { // Corrected placement of credentials
+                    withSonarQubeEnv('SonarQubeServer') { // Corrected placement of credentials
                         sh 'mvn sonar:sonar'
                     }
                 }
