@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs() // Corrected to cleanWs() for workspace cleanup
+                cleanWs() // Cleanup the workspace before starting
             }
         }
 
@@ -20,22 +20,30 @@ pipeline {
 
         stage('Build Application') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package' // Build the application using Maven
             }
         }
 
         stage('Test Application') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test' // Run tests using Maven
             }
         }
 
-        stage('SonarQube Analysis') { // Added a separate stage for clarity
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv(credentialsId:'Sonarqube-server') { 
-                        sh 'mvn sonar:sonar'
+                    withSonarQubeEnv('SonarQubeServer') { // Use the SonarQube server name, not credentialsId
+                        sh 'mvn sonar:sonar' // Run SonarQube analysis
                     }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false // No credentialsId needed here
                 }
             }
         }
