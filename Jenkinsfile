@@ -33,7 +33,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQubeServer') { // Use the SonarQube server name, not credentialsId
+                    withSonarQubeEnv(credentialsId:'SonarQubeServer') { // Use the SonarQube server name, not credentialsId
                         sh 'mvn sonar:sonar' // Run SonarQube analysis
                     }
                 }
